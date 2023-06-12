@@ -8,13 +8,15 @@ public class CameraControllerHosp : MonoBehaviour
     public GameObject Camera1;
     public GameObject Camera2;
     public GameObject Camera3;
+    public GameObject Camera4;
 
     public TextMeshProUGUI CamNumText;
     public TextMeshProUGUI CamRoomText;
 
     public static int CameraNum = 1;
-    public string[] RoomName = new string[] {"Reception", "Hallway", "Morgue"};
-    private int maxCameras;
+    public string[] RoomName = new string[] {"Reception", "Hallway", "Morgue", "Hospital Ward"};
+    public int maxCameras;
+    public int currentCamera;
 
     private void Start()
     {
@@ -25,6 +27,7 @@ public class CameraControllerHosp : MonoBehaviour
 
     private void Update()
     {
+        currentCamera = CameraNum;
         if (!AnomalyController.GameOver)
         {
             if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -35,15 +38,10 @@ public class CameraControllerHosp : MonoBehaviour
             {
                 PrevButtonClicked();
             }
-
-            if (AnomalyController.CamNoSignal > 0)
-            {
-                LostSignal();
-            }
         }
     }
 
-    private void NextButtonClicked()
+    public void NextButtonClicked()
     {
         if (CameraNum < maxCameras)
         {
@@ -56,7 +54,7 @@ public class CameraControllerHosp : MonoBehaviour
         CameraRefresh();
     }
 
-    private void PrevButtonClicked()
+    public void PrevButtonClicked()
     {
         if (CameraNum > 1)
         {
@@ -76,18 +74,28 @@ public class CameraControllerHosp : MonoBehaviour
             Camera1.SetActive(true);
             Camera2.SetActive(false);
             Camera3.SetActive(false);
+            Camera4.SetActive(false);
         }
         if (CameraNum == 2)
         {
             Camera1.SetActive(false);
             Camera2.SetActive(true);
             Camera3.SetActive(false);
+            Camera4.SetActive(false);
         }
         if (CameraNum == 3)
         {
             Camera1.SetActive(false);
             Camera2.SetActive(false);
             Camera3.SetActive(true);
+            Camera4.SetActive(false);
+        }
+        if (CameraNum == 4)
+        {
+            Camera1.SetActive(false);
+            Camera2.SetActive(false);
+            Camera3.SetActive(false);
+            Camera4.SetActive(true);
         }
 
         CamNumText.text = "Cam " + CameraNum;
@@ -97,20 +105,20 @@ public class CameraControllerHosp : MonoBehaviour
 
     public static IEnumerator StaticPlayer()
     {
-        AnomalyController.ScreenStatic.SetActive(true);
+        HospUIController.StaticVideo.SetActive(true);
         yield return new WaitForSecondsRealtime(0.5f);
-        AnomalyController.ScreenStatic.SetActive(false);
+        HospUIController.StaticVideo.SetActive(false);
     }
 
     private void LostSignal()
     {
-        if (CameraNum == AnomalyController.CamNoSignal)
+        if (CameraNum == 1)
         {
-            AnomalyController.ColorNoSignal.SetActive(true);
+            HospUIController.NoSignalColors.SetActive(true);
         }
         else
         {
-            AnomalyController.ColorNoSignal.SetActive(false);
+            HospUIController.NoSignalColors.SetActive(false);
         }
     }
 }

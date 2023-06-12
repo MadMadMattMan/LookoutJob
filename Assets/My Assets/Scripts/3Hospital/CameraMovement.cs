@@ -18,7 +18,51 @@ public class CameraMovement : MonoBehaviour
             SpeedMultiplier = 1;
         }
 
-        if (CameraControllerHosp.CameraNum == 3) //Morgue Room
+        if (CameraControllerHosp.CameraNum == 1)
+        {
+            float CurrentCameraAngle = transform.eulerAngles.y;
+            if (CurrentCameraAngle < 200)
+                CurrentCameraAngle += 360;
+            if (Input.GetKey(KeyCode.D) && CurrentCameraAngle < 410)
+            {
+                transform.Rotate(new Vector3(0, 7.5f * Time.deltaTime * SpeedMultiplier, 0));
+                GetComponent<AudioSource>().Play();
+            }
+            else if (Input.GetKey(KeyCode.A) && CurrentCameraAngle > 290)
+            {
+                transform.Rotate(-new Vector3(0, 7.5f * Time.deltaTime * SpeedMultiplier, 0));
+                GetComponent<AudioSource>().Play();
+            }
+            else
+            {
+                GetComponent<AudioSource>().Stop();
+            }
+
+            if (Input.GetKey(KeyCode.W) && transform.eulerAngles.x > 1)
+            {
+                transform.Rotate(-new Vector3(7.5f * Time.deltaTime * SpeedMultiplier, 0, 0));
+                GetComponent<AudioSource>().Play();
+            }
+            else if (Input.GetKey(KeyCode.S) && transform.eulerAngles.x < 50)
+            {
+                transform.Rotate(new Vector3(7.5f * Time.deltaTime * SpeedMultiplier, 0, 0));
+                GetComponent<AudioSource>().Play();
+            }
+            else
+            {
+                GetComponent<AudioSource>().Stop();
+            }
+
+            if (Input.GetAxis("Mouse ScrollWheel") < 0 && GetComponent<Camera>().fieldOfView < 89)
+            {
+                GetComponent<Camera>().fieldOfView += Time.deltaTime * 1000;
+            }
+            else if (Input.GetAxis("Mouse ScrollWheel") > 0 && GetComponent<Camera>().fieldOfView > 21)
+            {
+                GetComponent<Camera>().fieldOfView -= Time.deltaTime * 1000;
+            }
+        }
+        else if (CameraControllerHosp.CameraNum == 3) //Morgue Room
         {
             if (Input.GetKey(KeyCode.D) && transform.eulerAngles.y < 139)
             {
@@ -59,17 +103,14 @@ public class CameraMovement : MonoBehaviour
                 GetComponent<Camera>().fieldOfView -= Time.deltaTime * 1000;
             }
         }
-        else if (CameraControllerHosp.CameraNum == 1)
+        else if (CameraControllerHosp.CameraNum == 4)
         {
-            float CurrentCameraAngle = transform.eulerAngles.y;
-            if (CurrentCameraAngle < 200)
-                CurrentCameraAngle += 360;
-            if (Input.GetKey(KeyCode.D) && CurrentCameraAngle < 405)
+            if (Input.GetKey(KeyCode.D) && transform.eulerAngles.y < 238.49f)
             {
                 transform.Rotate(new Vector3(0, 7.5f * Time.deltaTime * SpeedMultiplier, 0));
                 GetComponent<AudioSource>().Play();
             }
-            else if (Input.GetKey(KeyCode.A) && CurrentCameraAngle > 310)
+            else if (Input.GetKey(KeyCode.A) && transform.eulerAngles.y > 140)
             {
                 transform.Rotate(-new Vector3(0, 7.5f * Time.deltaTime * SpeedMultiplier, 0));
                 GetComponent<AudioSource>().Play();
@@ -84,7 +125,7 @@ public class CameraMovement : MonoBehaviour
                 transform.Rotate(-new Vector3(7.5f * Time.deltaTime * SpeedMultiplier, 0, 0));
                 GetComponent<AudioSource>().Play();
             }
-            else if (Input.GetKey(KeyCode.S) && transform.eulerAngles.x < 50)
+            else if (Input.GetKey(KeyCode.S) && transform.eulerAngles.x < 34)
             {
                 transform.Rotate(new Vector3(7.5f * Time.deltaTime * SpeedMultiplier, 0, 0));
                 GetComponent<AudioSource>().Play();
@@ -102,15 +143,20 @@ public class CameraMovement : MonoBehaviour
             {
                 GetComponent<Camera>().fieldOfView -= Time.deltaTime * 1000;
             }
+
+            if (GetComponent<Camera>().fieldOfView > 90)
+            {
+                GetComponent<Camera>().fieldOfView = 90;
+            }
         }
 
-        if (transform.eulerAngles.z > 0.25f && transform.eulerAngles.z < 6)
+        if (transform.eulerAngles.z > 0.25f && transform.eulerAngles.z < 100)
         {
-            transform.Rotate(-new Vector3(0, 0, Time.deltaTime * 4 * SpeedMultiplier));
+            transform.Rotate(-new Vector3(0, 0, Time.deltaTime * 5 * SpeedMultiplier));
         }
-        else if (transform.eulerAngles.z > 254 && transform.eulerAngles.z < 359.75f)
+        else if (transform.eulerAngles.z > 200 && transform.eulerAngles.z < 359.75f)
         {
-            transform.Rotate(new Vector3(0, 0, Time.deltaTime * 4 * SpeedMultiplier));
+            transform.Rotate(new Vector3(0, 0, Time.deltaTime * 5 * SpeedMultiplier));
         }
     }
 }
